@@ -1,0 +1,144 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "ninja",
+      "displayName": "Ninja",
+      "description": "Build using ninja multi config generator",
+      "binaryDir": "${sourceDir}/.cmake-build/${presetName}",
+      "installDir": "${sourceDir}/dist",
+      "generator": "Ninja Multi-Config"
+    },
+    {
+      "name": "vs-x64",
+      "inherits": "default",
+      "displayName": "Visual Studio (x64)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "description": "Windows only build using Visual Studio Generator",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "xcode",
+      "inherits": "default",
+      "displayName": "XCode Configuration",
+      "description": "macOS only build using XCode Generator",
+      "generator": "Xcode",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vs-x64-debug",
+      "displayName": "Debug",
+      "configurePreset": "vs-x64",
+      "configuration": "Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "vs-x64-release",
+      "displayName": "Release",
+      "configurePreset": "vs-x64",
+      "configuration": "RelWithDebInfo",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "vs-x64-install",
+      "displayName": "Release",
+      "configurePreset": "vs-x64",
+      "configuration": "RelWithDebInfo",
+      "targets": ["install"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "xcode-debug",
+      "displayName": "Debug",
+      "configurePreset": "xcode",
+      "configuration": "Debug",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "xcode-release",
+      "displayName": "Release",
+      "configurePreset": "xcode",
+      "configuration": "RelWithDebInfo",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "xcode-install",
+      "displayName": "Release",
+      "configurePreset": "xcode",
+      "configuration": "RelWithDebInfo",
+      "targets": ["install"],
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "vs-x64",
+      "configurePreset": "vs-x64",
+      "output": { "outputOnFailure": true },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "xcode-debug",
+      "configurePreset": "xcode",
+      "configuration": "Debug",
+      "output": { "outputOnFailure": true },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    },
+    {
+      "name": "xcode-release",
+      "configurePreset": "xcode",
+      "configuration": "RelWithDebInfo",
+      "output": { "outputOnFailure": true },
+      "execution": {
+        "noTestsAction": "error",
+        "stopOnFailure": true
+      }
+    }
+  ]
+}

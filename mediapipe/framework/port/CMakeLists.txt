@@ -1,0 +1,10 @@
+cc_library(
+  NAME
+    logging
+  HDRS
+    logging.h
+  DEPS
+    //mediapipe/framework:port
+    @glog::glog
+    @absl::time
+)

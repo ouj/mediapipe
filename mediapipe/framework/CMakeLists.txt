@@ -1,0 +1,163 @@
+add_subdirectory(deps)
+add_subdirectory(port)
+
+mediapipe_proto_library(
+  NAME
+    calculator_proto
+  SRCS
+    calculator.proto
+  DEPS
+    :calculator_options_proto
+    :mediapipe_options_proto
+    :packet_factory_proto
+    :packet_generator_proto
+    :status_handler_proto
+    :stream_handler_proto
+    @libprotobuf
+)
+
+mediapipe_proto_library(
+  NAME
+    calculator_options_proto
+  SRCS
+    calculator_options.proto
+)
+
+mediapipe_proto_library(
+  NAME
+    mediapipe_options_proto
+  SRCS
+    mediapipe_options.proto
+)
+
+mediapipe_proto_library(
+  NAME
+    packet_factory_proto
+  SRCS
+    packet_factory.proto
+)
+
+mediapipe_proto_library(
+  NAME
+    packet_generator_proto
+  SRCS
+    packet_generator.proto
+)
+
+mediapipe_proto_library(
+  NAME
+    status_handler_proto
+  SRCS
+    status_handler.proto
+  DEPS
+    :mediapipe_options_proto
+)
+
+mediapipe_proto_library(
+  NAME
+    stream_handler_proto
+  SRCS
+    stream_handler.proto
+  DEPS
+    :mediapipe_options_proto
+)
+
+mediapipe_proto_library(
+  NAME
+    thread_pool_executor_proto
+  SRCS
+    thread_pool_executor.proto
+  DEPS
+    :mediapipe_options_proto
+)
+
+cc_library(
+  NAME
+    calculator_base
+  SRCS
+    calculator_base.cc
+  HDRS
+    calculator_base.h
+  DEPS
+    :calculator_proto
+    :calculator_context
+    :calculator_contract
+    :port
+    :timestamp
+    :registration
+    :logging
+    :status
+    @absl::memory
+)
+
+cc_library(
+  NAME
+    calculator_context
+  SRCS 
+    calculator_context.cc
+  HDRS 
+    calculator_context.h
+  DEPS
+    :calculator_state
+    :counter
+    :graph_service
+    :input_stream_shard
+    :output_stream_shard
+    :packet
+    :packet_set
+    :port
+    :timestamp
+    //mediapipe/framework/port:any_proto
+    //mediapipe/framework/port:status
+)
+
+cc_library(
+  NAME 
+    calculator_context_manager
+  SRCS 
+    calculator_context_manager.cc
+  HDRS 
+    calculator_context_manager.h
+  DEPS 
+    :calculator_context
+    :calculator_state
+    :timestamp
+    //mediapipe/framework/port:logging
+    //mediapipe/framework/port:status
+    //mediapipe/framework/tool:tag_map
+    @absl::core_headers
+    @absl::memory
+    @absl::synchronization
+)
+
+cc_library(
+  NAME
+    calculator_contract
+  SRCS 
+    calculator_contract.cc
+  HDRS 
+    calculator_contract.h
+  DEPS 
+    :calculator_cc_proto
+    :graph_service
+    :mediapipe_options_cc_proto
+    :packet_generator_cc_proto
+    :packet_type
+    :port
+    :status_handler_cc_proto
+    //mediapipe/framework/port:any_proto
+    //mediapipe/framework/port:status
+    //mediapipe/framework/tool:options_map
+    //mediapipe/framework/tool:packet_generator_wrapper_calculator_cc_proto
+    //mediapipe/framework/tool:tag_map
+    @absl::flat_hash_map
+    @absl::memory
+    @absl::strings
+)
+
+cc_library(
+  NAME
+    port
+  HDRS
+    port.h
+)
